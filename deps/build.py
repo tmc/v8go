@@ -47,7 +47,6 @@ is_debug=%s
 clang_use_chrome_plugins=false
 linux_use_bundled_binutils=false
 use_custom_libcxx=false
-use_sysroot=false
 symbol_level=0
 strip_debug_info=true
 is_component_build=false
@@ -80,15 +79,12 @@ def main():
     print('starting build for %s...' % os_arch())
 
     env = os.environ.copy()
-    if is_windows:
-        env["DEPOT_TOOLS_WIN_TOOLCHAIN"] = 0
-        env["GYP_MSVS_VERSION"] = 2017
 
     v8deps()
 
     gn_path = os.path.join(tools_path, "gn.bat" if is_windows else "gn")
     assert(os.path.exists(gn_path))
-    ninja_path = os.path.join(tools_path, "ninja")
+    ninja_path = os.path.join(tools_path, "ninja.bat" if is_windows else "ninja")
     assert(os.path.exists(ninja_path))
 
     build_path = os.path.join(deps_path, ".build", os_arch())
